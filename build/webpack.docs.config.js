@@ -33,14 +33,19 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        use: ['vue-loader', 'eslint-loader'],
+        use: ['vue-loader'],
         exclude: [/_cache/]
       },
       {
         test: /\.js$/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: ['babel-loader'],
         exclude: [/node_modules/, /md/]
       },
+      // {
+      //   test: /\.ts$/,
+      //   loader: 'ts-loader',
+      //   exclude: [/node_modules/, /md/]
+      // },
       {
         test: /\.md$/,
         use: ['vue-markdown-loader'],
@@ -67,7 +72,9 @@ module.exports = {
   resolve: {
     alias: {
       docs: path.resolve(__dirname, '../docs')
-    }
+    },
+    extensions: ['.js', '.ts', '...']
+
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),

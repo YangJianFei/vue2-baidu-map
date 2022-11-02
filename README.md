@@ -1,6 +1,8 @@
 # VUE3 BAIDU MAP
 
 ## baidu-map组件通过webpack构建的vue2版本（支持地图v2.0、v3.0和webGl）
+## baidu-map组件vue3版本移步（支持地图v2.0、v3.0和webGl）
+[vue-baidu-map-3x](https://yangjianfei.github.io/vue-baidu-map-3x/)
 
 <p align="center">
   <img src="https://yangjianfei.github.io/vue-baidu-map-3x/favicon.png" width="200px">
@@ -73,6 +75,21 @@ export default {
 ## 废弃
 ~~BmView~~
 废弃了<font color="#e81224">BmView</font>组件
+
+## 全国地区编码坐标点数据集
+
+```js
+import AreaCodePoint from 'vue-baidu-map-3x/dist/areaCodePoint.json';
+
+// 示例：
+{
+  "110000": {
+    "lat": 39.91101332265389,
+    "lng": 116.413554023728
+  }
+  // 其他地区。。。
+}
+```
 
 ## 协议
 

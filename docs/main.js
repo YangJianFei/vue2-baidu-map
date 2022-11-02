@@ -17,7 +17,8 @@ import './fonts/iconfont.css'
 Vue.use(VueMaterial)
 Vue.use(VueRouter)
 Vue.use(BaiduMap, {
-  ak: 'oW2UEhdth2tRbEE4FUpF9E5YVDCIPYih'
+  ak: 'oW2UEhdth2tRbEE4FUpF9E5YVDCIPYih',
+  type: 'WebGL' // ||API 默认API  (使用此模式 BMap=BMapGL)
 })
 
 Vue.material.registerTheme({

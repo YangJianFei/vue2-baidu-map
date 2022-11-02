@@ -8,6 +8,9 @@ module.exports = {
     library: 'VueBaiduMap',
     libraryTarget: 'umd'
   },
+  resolve: {
+    extensions: ['.js', '.ts', '...']
+  },
   module: {
     rules: [
       {
@@ -18,7 +21,12 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
-      }
+      },
+      // {
+      //   test: /\.ts$/,
+      //   loader: 'ts-loader',
+      //   exclude: [/node_modules/, /md/]
+      // }
     ]
   }
 }

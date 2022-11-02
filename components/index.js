@@ -1,5 +1,13 @@
+/**
+ * Author: yang jian fei
+ * Email: 1294485765@qq.com
+ * Created Date: Wednesday, November 2nd 2022, 4:50:22 pm
+ * Modified By: yang jian fei
+ * Desc: desc
+ * Copyright (c) 2022 黑发
+ */
+
 import BaiduMap from './map/Map.vue'
-import BmView from './map/MapView.vue'
 import BmScale from './controls/Scale.vue'
 import BmNavigation from './controls/Navigation.vue'
 import BmMapType from './controls/MapType.vue'
@@ -35,13 +43,13 @@ import BmlLushu from './extra/Lushu.vue'
 import BmlHeatmap from './extra/Heatmap.vue'
 import BmlCurveLine from './extra/CurveLine.vue'
 
+import { setConfig, getConfig } from './base/util';
+
 export default {
-  install (Vue, options) {
-    const {ak} = options
-    Vue.prototype._BMap = () => ({ak})
+  install(Vue, options = {}) {
+    setConfig(options);
 
     Vue.component('baidu-map', BaiduMap)
-    Vue.component('bm-view', BmView)
 
     Vue.component('bm-scale', BmScale)
     Vue.component('bm-navigation', BmNavigation)
@@ -81,7 +89,7 @@ export default {
 }
 
 export {
-  BaiduMap, BmView,
+  BaiduMap,
   BmScale, BmNavigation, BmMapType, BmOverviewMap, BmGeolocation, BmCopyright, BmCityList, BmPanorama, BmControl,
   BmMarker, BmPointCollection, BmPolyline, BmPolygon, BmCircle, BmGround, BmLabel, BmInfoWindow, BmOverlay,
   BmContextMenu, BmContextMenuItem,
@@ -95,4 +103,8 @@ export {
   BmlLushu,
   BmlHeatmap,
   BmlCurveLine
+}
+
+export {
+  getConfig
 }

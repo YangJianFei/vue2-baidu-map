@@ -16,12 +16,18 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
-      }
+      },
+      // {
+      //   test: /\.ts$/,
+      //   loader: 'ts-loader',
+      //   exclude: [/node_modules/, /md/]
+      // }
     ]
   },
   resolve: {
     alias: {
       vue: 'vue/dist/vue.js'
-    }
+    },
+    extensions: ['.js', '.ts', '...']
   }
 }
