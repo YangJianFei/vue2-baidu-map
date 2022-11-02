@@ -19,9 +19,3 @@ $ npm test
 ```
 $ npm run build
 ```
-
-## Build docs
-
-```
-$ npm run build:docs
-```
