@@ -16,7 +16,8 @@
   "scripts": {
     "build:docs": "webpack -p --config ./build/webpack.docs.config.js",
     "build": "webpack -p --config ./build/webpack.prod.config.js",
-    "dev": "webpack-dev-server --content-base docs --config ./build/webpack.docs.config.js --hot --inline",
+    "dev": "webpack-dev-server --content-base docs --config ./build/webpack.dev.config.js --hot --inline",
+    "dev:docs": "webpack-dev-server --content-base docs --config ./build/webpack.docs.config.js --hot --inline",
     "deploy": "npm run build && npm run build:docs",
     "test": "karma start",
     "lint": "eslint --ext .js,.vue src docs build",
