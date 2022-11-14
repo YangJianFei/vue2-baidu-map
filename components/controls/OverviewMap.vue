@@ -1,12 +1,13 @@
 <script>
-import {createSize} from '../base/factory.js'
+import { createSize } from '../base/factory.js'
 import commonMixin from '../base/mixins/common.js'
 import bindEvents from '../base/bindEvent.js'
+import { deleteEmptyKey } from '../base/util.js'
 
 export default {
   name: 'bm-overview-map',
   mixins: [commonMixin('control')],
-  render () {},
+  render() { },
   props: {
     anchor: {
       type: String
@@ -22,32 +23,34 @@ export default {
     }
   },
   watch: {
-    anchor () {
+    anchor() {
       this.reload()
     },
-    offset () {
+    offset() {
       this.reload()
     },
-    size () {
+    size() {
       this.reload()
     },
-    isOpen () {
+    isOpen() {
       this.reload()
     }
   },
   methods: {
-    load () {
-      const {BMap, map, isOpen, size, offset, anchor} = this
+    load() {
+      const { BMap, map, isOpen, size, offset, anchor } = this
       const mapTypes = []
       this.mapTypes && this.mapTypes.forEach(item => {
         mapTypes.push(global[item])
       })
-      this.originInstance = new BMap.OverviewMapControl({
+      let options = {
         anchor: global[anchor],
         offset: createSize(BMap, offset),
         size: createSize(BMap, size),
         isOpen
-      })
+      };
+      deleteEmptyKey(options);
+      this.originInstance = new BMap.OverviewMapControl(options)
       bindEvents.call(this, this.originInstance)
       map.addControl(this.originInstance)
     }

@@ -1,13 +1,14 @@
 <template>
-<div v-show="show">
-  <slot></slot>
-</div>
+  <div v-show="show">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
 import commonMixin from '../base/mixins/common.js'
 import bindEvents from '../base/bindEvent.js'
-import {createPoint, createSize} from '../base/factory.js'
+import { createPoint, createSize } from '../base/factory.js'
+import { deleteEmptyKey } from '../base/util.js'
 
 export default {
   name: 'bm-info-window',
@@ -49,51 +50,51 @@ export default {
     }
   },
   watch: {
-    show (val) {
+    show(val) {
       val ? this.openInfoWindow() : this.closeInfoWindow()
     },
-    'position.lng' (val, oldVal) {
+    'position.lng'(val, oldVal) {
       this.reload()
     },
-    'position.lat' (val, oldVal) {
+    'position.lat'(val, oldVal) {
       this.reload()
     },
-    'offset.width' (val, oldVal) {
+    'offset.width'(val, oldVal) {
       this.reload()
     },
-    'offset.height' (val) {
+    'offset.height'(val) {
       this.reload()
     },
-    maxWidth () {
+    maxWidth() {
       this.reload()
     },
-    width (val) {
+    width(val) {
       this.originInstance.setWidth(val)
     },
-    height (val) {
+    height(val) {
       this.originInstance.setHeight(val)
     },
-    title (val) {
+    title(val) {
       this.originInstance.setTitle(val)
     },
-    maximize (val) {
+    maximize(val) {
       val ? this.originInstance.enableMaximize() : this.originInstance.disableMaximize()
     },
-    autoPan (val) {
+    autoPan(val) {
       val ? this.originInstance.enableAutoPan() : this.originInstance.disableAutoPan()
     },
-    closeOnClick (val) {
+    closeOnClick(val) {
       val ? this.originInstance.enableCloseOnClick() : this.originInstance.disableCloseOnClick()
     }
   },
   methods: {
-    redraw () {
+    redraw() {
       this.originInstance.redraw()
     },
-    load () {
-      const {BMap, map, show, title, width, height, maxWidth, offset, autoPan, closeOnClick, message, maximize, bindObserver, $parent} = this
+    load() {
+      const { BMap, map, show, title, width, height, maxWidth, offset, autoPan, closeOnClick, message, maximize, bindObserver, $parent } = this
       const $content = this.$el
-      const overlay = new BMap.InfoWindow($content, {
+      let options = {
         width,
         height,
         title,
@@ -103,33 +104,35 @@ export default {
         enableCloseOnClick: closeOnClick,
         enableMessage: typeof message === 'undefined',
         message
-      })
+      };
+      deleteEmptyKey(options);
+      const overlay = new BMap.InfoWindow($content, options)
 
       maximize ? overlay.enableMaximize() : overlay.disableMaximize()
       bindEvents.call(this, overlay)
       this.originInstance = overlay
       overlay.redraw()
-      ;[].forEach.call($content.querySelectorAll('img'), $img => {
-        $img.onload = () => overlay.redraw()
-      })
+        ;[].forEach.call($content.querySelectorAll('img'), $img => {
+          $img.onload = () => overlay.redraw()
+        })
       bindObserver()
       this.$container = $parent.originInstance && $parent.originInstance.openInfoWindow ? $parent.originInstance : map
       show && this.openInfoWindow()
     },
-    bindObserver () {
+    bindObserver() {
       const MutationObserver = global.MutationObserver
       if (!MutationObserver) {
         return
       }
-      const {$el, originInstance} = this
+      const { $el, originInstance } = this
       this.observer = new MutationObserver(mutations => originInstance.redraw())
-      this.observer.observe($el, {attributes: true, childList: true, characterData: true, subtree: true})
+      this.observer.observe($el, { attributes: true, childList: true, characterData: true, subtree: true })
     },
-    openInfoWindow () {
-      const {BMap, $container, position, originInstance} = this
+    openInfoWindow() {
+      const { BMap, $container, position, originInstance } = this
       $container.openInfoWindow(originInstance, createPoint(BMap, position))
     },
-    closeInfoWindow () {
+    closeInfoWindow() {
       this.$container.closeInfoWindow(this.originInstance)
     }
   }

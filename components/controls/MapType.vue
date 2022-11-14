@@ -1,37 +1,40 @@
 <script>
 import commonMixin from '../base/mixins/common.js'
-import {createSize} from '../base/factory.js'
+import { createSize } from '../base/factory.js'
+import { deleteEmptyKey } from '../base/util.js'
 
 export default {
   name: 'bm-map-type',
-  render () {},
+  render() { },
   mixins: [commonMixin('control')],
   props: ['type', 'mapTypes', 'anchor', 'offset'],
   watch: {
-    anchor () {
+    anchor() {
       this.reload()
     },
-    offset () {
+    offset() {
       this.reload()
     },
-    type () {
+    type() {
       this.reload()
     },
-    mapTypes () {
+    mapTypes() {
       this.reload()
     }
   },
   methods: {
-    load () {
-      const {BMap, map, anchor, offset, type} = this
+    load() {
+      const { BMap, map, anchor, offset, type } = this
       const mapTypes = []
       this.mapTypes && this.mapTypes.forEach(item => mapTypes.push(global[item]))
-      this.originInstance = new BMap.MapTypeControl({
+      let options = {
         anchor: global[anchor],
         offset: offset && createSize(BMap, offset),
         type: global[type],
         mapTypes
-      })
+      };
+      deleteEmptyKey(options);
+      this.originInstance = new BMap.MapTypeControl(options)
       map.addControl(this.originInstance)
     }
   }

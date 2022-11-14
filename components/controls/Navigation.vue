@@ -1,10 +1,11 @@
 <script>
 import commonMixin from '../base/mixins/common.js'
-import {createSize} from '../base/factory.js'
+import { createSize } from '../base/factory.js'
+import { deleteEmptyKey, getConfig } from '../base/util.js'
 
 export default {
   name: 'bm-navigation',
-  render () {},
+  render() { },
   mixins: [commonMixin('control')],
   props: {
     anchor: {
@@ -25,29 +26,31 @@ export default {
     }
   },
   watch: {
-    anchor () {
+    anchor() {
       this.reload()
     },
-    offset () {
+    offset() {
       this.reload()
     },
-    type () {
+    type() {
       this.reload()
     },
-    showZoomInfo () {
+    showZoomInfo() {
       this.reload()
     }
   },
   methods: {
-    load () {
-      const {BMap, map, anchor, offset, type, showZoomInfo, enableGeolocation} = this
-      this.originInstance = new BMap.NavigationControl({
+    load() {
+      const { BMap, map, anchor, offset, type, showZoomInfo, enableGeolocation } = this
+      let options = {
         anchor: global[anchor],
         offset: offset && createSize(BMap, offset),
         type: global[type],
         showZoomInfo,
         enableGeolocation
-      })
+      };
+      deleteEmptyKey(options);
+      this.originInstance = new BMap.NavigationControl(options)
       map.addControl(this.originInstance)
     }
   }

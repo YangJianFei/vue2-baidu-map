@@ -1,11 +1,12 @@
 <script>
 import commonMixin from '../base/mixins/common.js'
 import bindEvents from '../base/bindEvent.js'
-import {createPoint, createIconSequence} from '../base/factory.js'
+import { createPoint, createIconSequence } from '../base/factory.js'
+import { deleteEmptyKey } from '../base/util.js'
 
 export default {
   name: 'bm-polyline',
-  render () {},
+  render() { },
   mixins: [commonMixin('overlay')],
   props: {
     path: {
@@ -37,58 +38,58 @@ export default {
     },
     icons: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     }
   },
   watch: {
     path: {
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         this.reload()
       },
       deep: true
     },
     icons: {
-      handler (val, oldVal) {
+      handler(val, oldVal) {
         this.reload()
       },
       deep: true
     },
-    strokeColor (val) {
+    strokeColor(val) {
       this.originInstance.setStrokeColor(val)
     },
-    strokeOpacity (val) {
+    strokeOpacity(val) {
       this.originInstance.setStrokeOpacity(val)
     },
-    strokeWeight (val) {
+    strokeWeight(val) {
       this.originInstance.setStrokeWeight(val)
     },
-    strokeStyle (val) {
+    strokeStyle(val) {
       this.originInstance.setStrokeStyle(val)
     },
-    editing (val) {
+    editing(val) {
       val ? this.originInstance.enableEditing() : this.originInstance.disableEditing()
     },
-    massClear (val) {
+    massClear(val) {
       val ? this.originInstance.enableMassClear() : this.originInstance.disableMassClear()
     },
-    clicking (val) {
+    clicking(val) {
       this.reload()
     }
   },
   computed: {
-    iconSequences () {
-      const {BMap, icons} = this
+    iconSequences() {
+      const { BMap, icons } = this
       return icons.map(item => {
         return createIconSequence(BMap, item)
       })
     }
   },
   methods: {
-    load () {
-      const {BMap, map, path, strokeColor, strokeWeight, strokeOpacity, strokeStyle, editing, massClear, clicking, iconSequences} = this
-      const overlay = new BMap.Polyline(path.map(item => createPoint(BMap, {lng: item.lng, lat: item.lat})), {
+    load() {
+      const { BMap, map, path, strokeColor, strokeWeight, strokeOpacity, strokeStyle, editing, massClear, clicking, iconSequences } = this
+      let options = {
         strokeColor,
         strokeWeight,
         strokeOpacity,
@@ -97,7 +98,9 @@ export default {
         enableMassClear: massClear,
         enableClicking: clicking,
         icons: iconSequences
-      })
+      };
+      deleteEmptyKey(options);
+      const overlay = new BMap.Polyline(path.map(item => createPoint(BMap, { lng: item.lng, lat: item.lat })), options)
       this.originInstance = overlay
       map.addOverlay(overlay)
       bindEvents.call(this, overlay)

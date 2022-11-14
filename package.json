@@ -1,12 +1,11 @@
 {
   "name": "vue2-baidu-map",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "yangjianfei",
   "description": "vue-baidu-map的vue2版本（支持v2.0、v3.0和webGl api）。Baidu Map Component for Vue 2.0 (support v2.0 、 v3.0 and webGl api)",
   "main": "index.js",
   "files": [
-    "dist",
-    "components",
+    "index.js",
     "types",
     "vetur"
   ],

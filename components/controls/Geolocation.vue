@@ -1,11 +1,12 @@
 <script>
 import commonMixin from '../base/mixins/common.js'
 import bindEvents from '../base/bindEvent.js'
-import {createIcon, createSize} from '../base/factory.js'
+import { createIcon, createSize } from '../base/factory.js'
+import getMapMethod from '../base/methodMap.js';
 
 export default {
   name: 'bm-geolocation',
-  render () {},
+  render() { },
   mixins: [commonMixin('control')],
   props: {
     anchor: {
@@ -25,32 +26,34 @@ export default {
     }
   },
   watch: {
-    anchor () {
+    anchor() {
       this.reload()
     },
-    offset () {
+    offset() {
       this.reload()
     },
-    showAddressBar () {
+    showAddressBar() {
       this.reload()
     },
-    autoLocation () {
+    autoLocation() {
       this.reload()
     },
-    locationIcon () {
+    locationIcon() {
       this.reload()
     }
   },
   methods: {
-    load () {
-      const {BMap, map, anchor, showAddressBar, autoLocation, locationIcon, offset} = this
-      this.originInstance = new BMap.GeolocationControl({
+    load() {
+      const { BMap, map, anchor, showAddressBar, autoLocation, locationIcon, offset } = this
+      let options = {
         anchor: global[anchor],
         showAddressBar,
         enableAutoLocation: autoLocation,
         offset: offset && createSize(BMap, offset),
         locationIcon: locationIcon && createIcon(BMap, locationIcon)
-      })
+      };
+      getMapMethod(options);
+      this.originInstance = new BMap.GeolocationControl(options)
       bindEvents.call(this, this.originInstance)
       map.addControl(this.originInstance)
     }
